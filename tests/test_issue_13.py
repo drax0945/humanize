@@ -1,0 +1,26 @@
+"""Issue #13: ordinal(12) returns '12nd' instead of '12th'."""
+
+from __future__ import annotations
+
+import pytest
+
+import humanize
+
+
+@pytest.mark.parametrize(
+    "test_input, expected",
+    [
+        (11, "11th"),
+        (12, "12th"),
+        (13, "13th"),
+        (111, "111th"),
+        (112, "112th"),
+        (113, "113th"),
+        (1, "1st"),
+        (2, "2nd"),
+        (3, "3rd"),
+        (22, "22nd"),
+    ],
+)
+def test_ordinal_teens(test_input: int, expected: str) -> None:
+    assert humanize.ordinal(test_input) == expected
