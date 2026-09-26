@@ -136,7 +136,7 @@ def ordinal(value: NumberOrString, gender: str = "male") -> str:
     except (TypeError, ValueError):
         return str(value)
     gender = "male" if gender == "male" else "female"
-    digit = value % 10
+    digit = value % 10 if value % 100 not in (11, 12, 13) else 0
     return f"{value}{P_(*_ORDINAL_SUFFIXES[gender][digit])}"
 
 
