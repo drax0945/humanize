@@ -9,9 +9,9 @@ import bisect
 from .i18n import _gettext as _
 from .i18n import _gettext_noop as N_
 from .i18n import _ngettext, decimal_separator, thousands_separator
-from .i18n import _ngettext_noop as NS_
+from .i18n import _ngettext_noop as NS
 from .i18n import _pgettext as P_
-from .i18n import _pgettext_noop as PS_
+from .i18n import _pgettext_noop as PS
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
@@ -136,7 +136,11 @@ def ordinal(value: NumberOrString, gender: str = "male") -> str:
     except (TypeError, ValueError):
         return str(value)
     gender = "male" if gender == "male" else "female"
-    digit = value % 10
+    magnitude = abs(value)
+    if 11 <= magnitude % 100 <= 13:
+        digit = 0
+    else:
+        digit = magnitude % 10
     return f"{value}{P_(*_ORDINAL_SUFFIXES[gender][digit])}"
 
 
@@ -430,7 +434,7 @@ def scientific(value: NumberOrString, precision: int = 2) -> str:
         precision (int): Number of decimal for first part of the number.
 
     Returns:
-        str: Number in scientific notation z.wq x 10ⁿ.
+        str: Number in string scientific notation z.wq x 10ⁿ.
     """
     import math
 
@@ -591,4 +595,4 @@ def metric(value: float, unit: str = "", precision: int = 3) -> str:
     else:
         space = " "
 
-    return f"{value_}{space}{ordinal_}{unit}"
+    return f"{value_}{space}{ordinal_}{unit}
