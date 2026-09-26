@@ -137,6 +137,8 @@ def ordinal(value: NumberOrString, gender: str = "male") -> str:
         return str(value)
     gender = "male" if gender == "male" else "female"
     digit = value % 10
+    if value % 100 in (11, 12, 13):
+        digit = 0
     return f"{value}{P_(*_ORDINAL_SUFFIXES[gender][digit])}"
 
 
@@ -579,16 +581,18 @@ def metric(value: float, unit: str = "", precision: int = 3) -> str:
         value /= 10 ** (new_bucket - old_bucket)
         digits = int(max(0, precision - exponent % 3 - 1))
 
-    if exponent >= 3:
-        ordinal_ = "kMGTPEZYRQ"[exponent // 3 - 1]
-    elif exponent < 0:
-        ordinal_ = "mμnpfazyrq"[(-exponent - 1) // 3]
+    if exponent < -24:
+        exponent = max(exponent, -30)
     else:
-        ordinal_ = ""
-    value_ = format(value, f".{digits}f")
-    if not (unit or ordinal_) or unit in ("°", "′", "″"):
-        space = ""
-    else:
-        space = " "
+        exponent_break = int(exponent // 3) * 3
+        value /= 10**exponent_break
+        value = round(value, precision)
 
-    return f"{value_}{space}{ordinal_}{unit}"
+    if exponent >= 24:
+        exponent = min(exponent, 33)
+        value *= 10
+
+    digits = max(0, int(precision - 1))
+    format_str = f"{{:.{digits}f}}"
+    value_str = format_str.format(value)
+    return f"{value_str} {unit}"
