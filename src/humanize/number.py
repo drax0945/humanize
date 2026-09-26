@@ -9,9 +9,9 @@ import bisect
 from .i18n import _gettext as _
 from .i18n import _gettext_noop as N_
 from .i18n import _ngettext, decimal_separator, thousands_separator
-from .i18n import _ngettext_noop as NS
+from .i18n import _ngettext_noop as NS_
 from .i18n import _pgettext as P_
-from .i18n import _pgettext_noop as PS
+from .i18n import _pgettext_noop as PS_
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
@@ -595,4 +595,4 @@ def metric(value: float, unit: str = "", precision: int = 3) -> str:
     else:
         space = " "
 
-    return f"{value_}{space}{ordinal_}{unit}
+    return f"{value_}{space}{ordinal_}{unit}"
