@@ -9,9 +9,9 @@ import bisect
 from .i18n import _gettext as _
 from .i18n import _gettext_noop as N_
 from .i18n import _ngettext, decimal_separator, thousands_separator
-from .i18n import _ngettext_noop as NS_
-from .i18n import _pgettext as P_
-from .i18n import _pgettext_noop as PS_
+from .i18n import _ngettext_noop as NS
+from .i18n import _pgettext as P
+from .i18n import _pgettext_noop as PS
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
@@ -39,28 +39,28 @@ _SUPERSCRIPT_TRANS = str.maketrans(_SUPERSCRIPT_MAP)
 
 _ORDINAL_SUFFIXES = {
     "male": (
-        PS_("0 (male)", "th"),
-        PS_("1 (male)", "st"),
-        PS_("2 (male)", "nd"),
-        PS_("3 (male)", "rd"),
-        PS_("4 (male)", "th"),
-        PS_("5 (male)", "th"),
-        PS_("6 (male)", "th"),
-        PS_("7 (male)", "th"),
-        PS_("8 (male)", "th"),
-        PS_("9 (male)", "th"),
+        PS("0 (male)", "th"),
+        PS("1 (male)", "st"),
+        PS("2 (male)", "nd"),
+        PS("3 (male)", "rd"),
+        PS("4 (male)", "th"),
+        PS("5 (male)", "th"),
+        PS("6 (male)", "th"),
+        PS("7 (male)", "th"),
+        PS("8 (male)", "th"),
+        PS("9 (male)", "th"),
     ),
     "female": (
-        PS_("0 (female)", "th"),
-        PS_("1 (female)", "st"),
-        PS_("2 (female)", "nd"),
-        PS_("3 (female)", "rd"),
-        PS_("4 (female)", "th"),
-        PS_("5 (female)", "th"),
-        PS_("6 (female)", "th"),
-        PS_("7 (female)", "th"),
-        PS_("8 (female)", "th"),
-        PS_("9 (female)", "th"),
+        PS("0 (female)", "th"),
+        PS("1 (female)", "st"),
+        PS("2 (female)", "nd"),
+        PS("3 (female)", "rd"),
+        PS("4 (female)", "th"),
+        PS("5 (female)", "th"),
+        PS("6 (female)", "th"),
+        PS("7 (female)", "th"),
+        PS("8 (female)", "th"),
+        PS("9 (female)", "th"),
     ),
 }
 _APNUMBER_WORDS = (
@@ -141,7 +141,7 @@ def ordinal(value: NumberOrString, gender: str = "male") -> str:
         digit = 0
     else:
         digit = magnitude % 10
-    return f"{value}{P_(*_ORDINAL_SUFFIXES[gender][digit])}"
+    return f"{value}{P(*_ORDINAL_SUFFIXES[gender][digit])}"
 
 
 def intcomma(value: NumberOrString, ndigits: int | None = None) -> str:
@@ -209,18 +209,18 @@ def intcomma(value: NumberOrString, ndigits: int | None = None) -> str:
 
 powers = [10**x for x in (3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 100)]
 human_powers = (
-    NS_("thousand", "thousand"),
-    NS_("million", "million"),
-    NS_("billion", "billion"),
-    NS_("trillion", "trillion"),
-    NS_("quadrillion", "quadrillion"),
-    NS_("quintillion", "quintillion"),
-    NS_("sextillion", "sextillion"),
-    NS_("septillion", "septillion"),
-    NS_("octillion", "octillion"),
-    NS_("nonillion", "nonillion"),
-    NS_("decillion", "decillion"),
-    NS_("googol", "googol"),
+    NS("thousand", "thousand"),
+    NS("million", "million"),
+    NS("billion", "billion"),
+    NS("trillion", "trillion"),
+    NS("quadrillion", "quadrillion"),
+    NS("quintillion", "quintillion"),
+    NS("sextillion", "sextillion"),
+    NS("septillion", "septillion"),
+    NS("octillion", "octillion"),
+    NS("nonillion", "nonillion"),
+    NS("decillion", "decillion"),
+    NS("googol", "googol"),
 )
 
 
@@ -331,7 +331,7 @@ def apnumber(value: NumberOrString) -> str:
         return str(value)
     if not 0 <= value < 10:
         return str(value)
-    return _(_APNUMBER_WORDS[value])
+    return _( _APNUMBER_WORDS[value])
 
 
 def fractional(value: NumberOrString) -> str:
@@ -494,9 +494,9 @@ def clamp(
             to output.
 
     Returns:
-        str: Formatted number. The output is clamped between the indicated floor and
-            ceil. If the number is larger than ceil or smaller than floor, the output
-            will be prepended with a token indicating as such.
+        str: Formatted number. The output is clamped between floor and ceil. If the
+            value is larger than ceil or smaller than floor, the output will be
+            prepended with a token indicating as such.
 
     """
     import math
